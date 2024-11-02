@@ -56,7 +56,22 @@
 //    }
 // }
 
+//
 // Serial Input to p5.js Using the p5.webserial Library
 // https://itp.nyu.edu/physcomp/labs/labs-serial-communication/lab-webserial-input-to-p5-js/
 //
-//
+
+void setup() {
+  Serial.begin(9600); // initialize serial communications
+}
+ 
+void loop() {
+  // read the input pin:
+  int potentiometer = analogRead(A0);                  
+  // remap the pot value to fit in 1 byte:
+  int mappedPot = map(potentiometer, 0, 1023, 0, 255); 
+  // print it out the serial port:
+  Serial.write(mappedPot);                             
+  // slight delay to stabilize the ADC:
+  delay(1);                                            
+}
