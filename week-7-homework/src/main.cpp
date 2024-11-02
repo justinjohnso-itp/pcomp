@@ -61,17 +61,30 @@
 // https://itp.nyu.edu/physcomp/labs/labs-serial-communication/lab-webserial-input-to-p5-js/
 //
 
-void setup() {
-  Serial.begin(9600); // initialize serial communications
-}
+// Sending binary data
+// void setup() {
+//   Serial.begin(9600); // initialize serial communications
+// }
  
+// void loop() {
+//   // read the input pin:
+//   int potentiometer = analogRead(A0);                  
+//   // remap the pot value to fit in 1 byte:
+//   int mappedPot = map(potentiometer, 0, 1023, 0, 255); 
+//   // print it out the serial port:
+//   Serial.write(mappedPot);                             
+//   // slight delay to stabilize the ADC:
+//   delay(1);                                            
+// }
+
+// Sending ASCII data
+void setup() {
+   Serial.begin(9600); // initialize serial communications
+}
+
 void loop() {
-  // read the input pin:
-  int potentiometer = analogRead(A0);                  
-  // remap the pot value to fit in 1 byte:
-  int mappedPot = map(potentiometer, 0, 1023, 0, 255); 
-  // print it out the serial port:
-  Serial.write(mappedPot);                             
-  // slight delay to stabilize the ADC:
-  delay(1);                                            
+   int potentiometer = analogRead(A0);                  // read the input pin
+   int mappedPot = map(potentiometer, 0, 1023, 0, 255); // remap the pot value to fit in 1 byte
+   Serial.println(potentiometer);                           // print it out the serial port
+   delay(1);                                            // slight delay to stabilize the ADC
 }

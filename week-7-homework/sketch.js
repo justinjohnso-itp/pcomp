@@ -6,8 +6,11 @@ let portButton;
 let inData; // for incoming serial data
 let outByte = 0; // for outgoing data
 
+let xPos = 0; // x position of the graph
+
 function setup() {
-  createCanvas(400, 300); // make the canvas
+  createCanvas(400, 300);
+  background(0x08, 0x16, 0x40);
   // check to see if serial is available:
   if (!navigator.serial) {
     alert("WebSerial is not supported in this browser. Try Chrome or MS Edge.");
@@ -29,9 +32,9 @@ function setup() {
 }
 
 function draw() {
-  background(0);
-  fill(255);
-  text("sensor value: " + inData, 30, 50);
+  // fill(255);
+  // text("sensor value: " + inData, 30, 50);
+  graphData(inData);
 }
 
 // if there's no port selected,
@@ -72,7 +75,19 @@ function portError(err) {
 // read any incoming data as a string
 // (assumes a newline at the end of it):
 function serialEvent() {
-  inData = Number(serial.read());
+  // inData = Number(serial.read());
+
+  // read a byte from the serial port, convert it to a number:
+  // inData = serial.readLine();
+
+  // read a string from the serial port:
+  var inString = serial.readLine();
+  // check to see that there's actually a string there:
+  if (inString) {
+    // convert it to a number:
+    inData = Number(inString);
+  }
+
   console.log(inData);
 }
 
@@ -91,4 +106,21 @@ function portDisconnect() {
 
 function closePort() {
   serial.close();
+}
+
+function graphData(newData) {
+  // map the range of the input to the window height:
+  var yPos = map(newData, 0, 1023, 0, height);
+  // draw the line in a pretty color:
+  stroke(0xa8, 0xd9, 0xa7);
+  line(xPos, height, xPos, height - yPos);
+  // at the edge of the screen, go back to the beginning:
+  if (xPos >= width) {
+    xPos = 0;
+    // clear the screen by resetting the background:
+    background(0x08, 0x16, 0x40);
+  } else {
+    // increment the horizontal position for the next reading:
+    xPos++;
+  }
 }
